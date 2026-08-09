@@ -28,10 +28,12 @@
 	</scm>
 
 	<properties>
-		<java.version>25</java.version>
+		<java.version>21</java.version>
 		<spring-ai.version>2.0.0</spring-ai.version>
-		<maven.compiler.source>25</maven.compiler.source>
-		<maven.compiler.target>25</maven.compiler.target>
+		<!-- 覆盖 Spring Boot 4.1 默认的 6.0.3,降到 5.10 兼容 IntelliJ 2023.3.4 自带的 JUnit5 runner -->
+		<junit-jupiter.version>5.10.2</junit-jupiter.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -86,11 +88,7 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.hypersistence</groupId>
-			<artifactId>hypersistence-utils-hibernate-63</artifactId>
-			<version>3.8.2</version>
-		</dependency>
+		<!-- pgvector 类型由 Spring AI starter 自身提供，无需 hypersistence-utils（其 Hibernate 6.3 与当前 Hibernate 7 不兼容）-->
 
 		<!-- Spring AI -->
 		<dependency>
