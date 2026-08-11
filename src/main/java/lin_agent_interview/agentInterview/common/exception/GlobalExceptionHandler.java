@@ -5,10 +5,12 @@ import lin_agent_interview.agentInterview.common.constant.ErrorCode;
 import lin_agent_interview.agentInterview.common.result.BaseResponse;
 import lin_agent_interview.agentInterview.common.result.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.net.BindException;
 
@@ -57,5 +59,11 @@ public class GlobalExceptionHandler {
     public BaseResponse<?> handleUnknown(Exception e) {
         log.error("未捕获异常", e);
         return ResultUtils.error(ErrorCode.INTERNAL_ERROR.getCode(), "服务器内部错误");
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<Void> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        // 针对 favicon.ico 等未找到的静态资源请求，直接返回 404，不打印错误日志
+        return ResponseEntity.notFound().build();
     }
 }
